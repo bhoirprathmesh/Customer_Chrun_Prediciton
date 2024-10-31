@@ -1,0 +1,188 @@
+/* Global Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  color: #343a40; /* Dark Gray for text */
+  background-color: #F8F9FA; /* Light Gray for background */
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Header */
+.header {
+  font-size: 5rem;
+  font-weight: 700;
+  color: #007BFF; /* Bright Blue */
+  margin-bottom: 20px;
+  animation: pulse 1.5s infinite;
+}
+
+/* Section Styling */
+.about-us {
+  background-color: #ffffff; /* White for content sections */
+}
+
+/* Text Styling */
+.text-success {
+  color: #28a745 !important; /* Green */
+}
+
+.font-weight-bold {
+  font-weight: 700 !important;
+}
+
+.display-5 {
+  font-size: 2.5rem;
+  animation: fadeIn 1s ease-in-out;
+}
+
+/* Feature Box Styling */
+.feature-box {
+  padding: 20px;
+  background-color: #ffffff; /* White */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.feature-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Feature Number */
+.feature-number {
+  font-size: 2rem;
+  font-weight: 700;
+  background-color: #28a745; /* Green */
+  color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  display: inline-block;
+  position: absolute;
+  top: -20px;
+  left: 20px;
+}
+
+/* Error Page Styles */
+#error-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #F8F9FA; /* Light Gray */
+}
+
+#error-page .content {
+  text-align: center;
+  background-color: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  animation: fadeInDown 1s ease-in-out;
+}
+
+/* Button Styles */
+.btns a {
+  display: inline-block;
+  padding: 12px 30px;
+  margin: 10px;
+  background-color: #007BFF; /* Bright Blue */
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 50px;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btns a:hover {
+  background-color: white; /* White */
+  color: #007BFF; /* Bright Blue */
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 30px;
+  margin: 10px;
+  background-color: #007BFF; /* Bright Blue */
+  color: white;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-radius: 50px;
+  transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+  background-color: white; /* White */
+  color: #007BFF; /* Bright Blue */
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .display-5 {
+    font-size: 2rem;
+  }
+
+  .grid-four-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .img-fluid {
+    margin-top: 20px;
+  }
+
+  .b {
+    margin-top: 10px;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+/* Error Color */
+.error-message {
+  color: #dc3545; /* Red */
+}
+
+/* Prediction Form Animation */
+.prediction-form {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.bg-blue {
+  background-color: #e6f2ff; /* Adjust this to your desired blue shade */
+}
+
