@@ -79,25 +79,25 @@ http://localhost:5000
 ## 📸 Screenshots
 
 ### Landing Page  
-![Landing Page](screenshot/s1.png)
+![Landing Page](screenshots/s1.png)
 
 ### Prediction  
-![Prediction](screenshot/s2.png)
+![Prediction](screenshots/s2.png)
 
 ### Predicited Single User  
-![Predicited](screenshot/s3.png)
+![Predicited](screenshots/s3.png)
 
 ### Prediction Mutiple user 
-![Prediction](screenshot/s4.png)
+![Prediction](screenshots/s4.png)
 
 ### Predicted Multiple user
-![Predicted](screenshot/s5.png)
+![Predicted](screenshots/s5.png)
 
 ### Analysis 
-![Analysis](screenshot/s6.png)
+![Analysis](screenshots/s6.png)
 
 ---
 
 ## 🎥 Demo
 
-![Demo](screenshot/video1.mp4)
+![Demo](screenshots/video1.mp4)
