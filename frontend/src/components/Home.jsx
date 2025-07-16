@@ -1,20 +1,33 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import prediction from '../assets/p1.jpeg';
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Button, Card } from "react-bootstrap";
+import prediction from "../assets/UserAvatar.png";
 import "react-toastify/dist/ReactToastify.css";
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaLinkedin, FaInstagram, FaTwitter, FaWhatsapp } from 'react-icons/fa';
+import {
+  FaMapMarkerAlt,
+  FaPhone,
+  FaEnvelope,
+  FaLinkedin,
+  FaInstagram,
+  FaTwitter,
+  FaWhatsapp,
+  FaChartLine,
+  FaLightbulb,
+  FaMoneyBillWave,
+  FaUserFriends,
+  FaCogs,
+  FaArrowUp,
+} from "react-icons/fa";
 import emailjs from "emailjs-com";
-import { useAuth } from '../store/auth';
+import { useAuth } from "../store/auth";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
-
   const navigate = useNavigate();
-  const primaryColor = "#007bff"; // Primary color defined
+  const primaryColor = "#4361ee"; // Updated to a vibrant blue
+  const secondaryColor = "#7209b7"; // Complementary purple
 
-  // Contact
+  // Contact form state
   const defaultContactFormData = {
     username: "",
     email: "",
@@ -23,21 +36,36 @@ const Home = () => {
   };
 
   const [contact, setContact] = useState(defaultContactFormData);
-
-  const [userData, setUSerData] = useState(true);
-
+  const [userData, setUserData] = useState(true);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const { user } = useAuth();
 
-  if (userData && user) {
-    setContact({
-      username: user.username,
-      email: user.email,
-      phone: user.phone,
-      message: "",
-    })
+  // Check scroll position for scroll-to-top button
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 300);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-    setUSerData(false);
-  }
+  // Scroll to top function
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Auto-populate user data if logged in
+  useEffect(() => {
+    if (userData && user) {
+      setContact({
+        username: user.username,
+        email: user.email,
+        phone: user.phone,
+        message: "",
+      });
+      setUserData(false);
+    }
+  }, [user, userData]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -60,9 +88,7 @@ const Home = () => {
       )
       .then((result) => {
         setContact({
-          username: "",
-          email: "",
-          phone: "",
+          ...contact,
           message: "",
         });
         toast.success("Message Sent Successfully");
@@ -73,214 +99,576 @@ const Home = () => {
   };
 
   return (
-    <div className="bg-light text-dark py-5">
-      <div className="container">
-        <div className="row align-items-center mb-5">
-          {/* Text Section */}
-          <div className="col-md-8 mb-4">
-            <p className="text-primary mb-1 fw-bold fs-2">Welcome to churn prediction</p>
-            <h1 className="display-5 font-weight-bold">
-              Your trusted partner for smart,
-              <br />
-              prediction solutions.
-            </h1>
-            <div className="mt-4">
-              <button className="btn fw-bold" onClick={() => navigate('/prediction')} style={{ backgroundColor: primaryColor, color: "white" }}>PREDICTION</button>
-            </div>
-          </div>
-          {/* Image Section */}
-          <div className="col-md-4 d-flex justify-content-center">
-            <img
-              src={prediction} // Replace with the actual path to your image
-              alt="Team working"
-              className="img-fluid" // Use Bootstrap's img-fluid class to make the image responsive
-              style={{ maxWidth: "100%", height: "100%"}} // Ensure image adjusts properly within the container
-            />
-          </div>
+    <div className="home-container mt-5">
+      {/* Scroll to top button */}
+      {showScrollTop && (
+        <div className="scroll-top-btn" onClick={scrollToTop}>
+          <FaArrowUp />
         </div>
-      </div>
+      )}
 
-      <section className="about-us bg-white py-5">
-        <Container>
-          <Row>
-            <h1 className="text-center text-primary fw-bold mb-4">-Churn Prediction-</h1>
-            <Col md={6} className="d-flex align-items-center">
+      {/* Hero Section */}
+      <section className="hero-section py-5 position-relative overflow-hidden">
+        <div className="position-absolute top-0 start-0 w-100 h-100">
+          <div
+            className="position-absolute top-20 start-10 w-72 h-72 bg-blue-200 rounded-circle opacity-30 animate-pulse"
+            style={{ mixBlendMode: "multiply", filter: "blur(20px)" }}
+          ></div>
+          <div
+            className="position-absolute top-40 end-10 w-72 h-72 bg-purple-200 rounded-circle opacity-30 animate-pulse"
+            style={{
+              animationDelay: "2s",
+              mixBlendMode: "multiply",
+              filter: "blur(20px)",
+            }}
+          ></div>
+          <div
+            className="position-absolute bottom-20 start-50 w-72 h-72 bg-indigo-200 rounded-circle opacity-30 animate-pulse"
+            style={{
+              animationDelay: "4s",
+              mixBlendMode: "multiply",
+              filter: "blur(20px)",
+            }}
+          ></div>
+        </div>
+
+        <Container className="position-relative">
+          <Row className="align-items-center">
+            <Col lg={7} className="mb-4 mb-lg-0">
               <div>
-                <p className='fw-bold fs-5'>
-                  Churn prediction refers to the process of identifying customers who are likely to stop using a service or product within a certain timeframe. This is particularly relevant in subscription-based businesses, such as telecoms, SaaS (Software as a Service), and online services, where retaining customers is crucial for long-term profitability.
+                <p className="text-primary fw-bold fs-3 mb-2">
+                  WELCOME TO CHURN PREDICTION
                 </p>
+                <h1 className="display-4 fw-bold text-dark">
+                  Your trusted partner for
+                  <span className="text-gradient"> smart prediction</span>
+                  <br />
+                  solutions.
+                </h1>
+                <p className="lead mt-3 mb-4">
+                  Leverage advanced analytics and machine learning to predict
+                  customer churn and maximize retention rates with data-driven
+                  insights.
+                </p>
+                <div className="d-flex flex-column flex-sm-row gap-3 mt-4">
+                  <Button
+                    className="btn-glow fw-bold px-4 py-3"
+                    onClick={() => navigate("/prediction")}
+                  >
+                    Start Prediction
+                  </Button>
+                  <Button
+                    variant="outline-primary"
+                    className="btn-glow-outline fw-bold px-4 py-3"
+                  >
+                    Learn More
+                  </Button>
+                </div>
 
-                <div className="d-flex mt-3">
-                  <Button className="btn fw-bold" style={{ backgroundColor: primaryColor, color: "white" }}>CONTACT US</Button>
-                  <Button className='btn ms-3 fw-bold' style={{ backgroundColor: primaryColor, color: "white" }}>SERVICES</Button>
+                <div className="d-flex gap-5 pt-4">
+                  <div className="text-center">
+                    <div className="fs-2 fw-bold">95%</div>
+                    <div className="text-muted">Accuracy Rate</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="fs-2 fw-bold">500+</div>
+                    <div className="text-muted">Companies Served</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="fs-2 fw-bold">24/7</div>
+                    <div className="text-muted">Support</div>
+                  </div>
                 </div>
               </div>
             </Col>
-            <Col md={6} className="d-flex justify-content-center align-items-center"> {/* Centering classes added */}
-              <img 
-                src={prediction} 
-                alt="E-Waste Management" 
-                className="img-fluid" 
-                style={{ maxWidth: "75%", height: "auto" }} // height set to auto for better aspect ratio
-              />
+            <Col lg={5} className="d-flex justify-content-center">
+              <div className="position-relative h-100 w-100">
+                <div className="gradient-border p-2 rounded-3">
+                  <Card className="border-0">
+                    <Card.Body className="p-4">
+                      <div className="d-flex justify-content-between align-items-center mb-3">
+                        <h5 className="fw-bold mb-0">
+                          Churn Analytics Dashboard
+                        </h5>
+                        <div className="d-flex gap-1">
+                          <span
+                            className="d-inline-block rounded-circle bg-danger"
+                            style={{ width: "12px", height: "12px" }}
+                          ></span>
+                          <span
+                            className="d-inline-block rounded-circle bg-warning"
+                            style={{ width: "12px", height: "12px" }}
+                          ></span>
+                          <span
+                            className="d-inline-block rounded-circle bg-success"
+                            style={{ width: "12px", height: "12px" }}
+                          ></span>
+                        </div>
+                      </div>
+
+                      <div className="mb-4">
+                        <div
+                          className="d-flex align-items-end gap-2"
+                          style={{ height: "120px" }}
+                        >
+                          {[65, 80, 45, 90, 75, 85, 70].map((height, index) => (
+                            <div
+                              key={index}
+                              className="flex-grow-1 d-flex flex-column align-items-center"
+                            >
+                              <div
+                                className="w-100 rounded-top"
+                                style={{
+                                  height: `${height}%`,
+                                  background:
+                                    "linear-gradient(to top, #4361ee, #7209b7)",
+                                }}
+                              ></div>
+                              <div className="text-muted small mt-2">
+                                Q{index + 1}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <Row>
+                        <Col className="mb-3 mb-md-0">
+                          <div className="text-center p-3 bg-primary bg-opacity-10 rounded">
+                            <FaChartLine className="fs-4 text-primary mb-2" />
+                            <div className="small fw-bold">Retention Rate</div>
+                            <div className="fs-5 fw-bold text-primary">87%</div>
+                          </div>
+                        </Col>
+                        <Col className="mb-3 mb-md-0">
+                          <div className="text-center p-3 bg-purple bg-opacity-10 rounded">
+                            <FaUserFriends className="fs-4 text-purple mb-2" />
+                            <div className="small fw-bold">Active Users</div>
+                            <div className="fs-5 fw-bold text-purple">2.4K</div>
+                          </div>
+                        </Col>
+                        <Col>
+                          <div className="text-center p-3 bg-success bg-opacity-10 rounded">
+                            <FaChartLine className="fs-4 text-success mb-2" />
+                            <div className="small fw-bold">Predictions</div>
+                            <div className="fs-5 fw-bold text-success">156</div>
+                          </div>
+                        </Col>
+                      </Row>
+                    </Card.Body>
+                  </Card>
+                </div>
+              </div>
             </Col>
           </Row>
         </Container>
       </section>
 
-      {/* Grid section */}
-      <div className="container py-5 mt-5">
-        <div className="row text-center">
-          {[
-            {
-              number: "01",
-              title: "Improved Customer Retention",
-              description: "By identifying at-risk customers, businesses can implement targeted strategies to retain them, reducing churn rates."
-            },
-            {
-              number: "02",
-              title: "Enhanced Customer Insights",
-              description: "Analyzing churn data provides valuable insights into customer behavior and preferences, allowing for more personalized experiences."
-            },
-            {
-              number: "03",
-              title: "Cost Efficiency",
-              description: "Retaining existing customers is often cheaper than acquiring new ones, making churn prediction a cost-effective strategy for you company."
-            },
-            {
-              number: "04",
-              title: "Informed Decision-Making",
-              description: "Data-driven insights from churn prediction can guide marketing, sales, and customer service strategies."
-            },
-            {
-              number: "05",
-              title: "Increased Revenue",
-              description: "By minimizing churn, companies can maintain a stable revenue stream and maximize the lifetime value of customers."
-            },
-            {
-              number: "06",
-              title: "Resource Allocation",
-              description: "Understanding which customers are likely to churn helps in prioritizing resources for retention efforts."
-            },
-          ].map((feature, index) => (
-            <div key={index} className="col-md-4 mb-4">
-              <div className="feature-box animate-box">
-                <div className="feature-number bg-primary">{feature.number}</div>
-                <h4 className='mt-4 fw-bold' style={{ color: primaryColor }}>{feature.title}</h4>
-                <p className='fs-5'>{feature.description}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Contact */}
-      <div className="container py-5">
-        <div className="text-center">
-          <h2 className="fw-bold" style={{ color: primaryColor }}> - Contact Us - </h2>
-          <hr />
-          <p className="lead fw-bold">Have questions or inquiries? Get in touch with us!</p>
-        </div>
-
-        <div className="row mt-5">
-          {/* Left Image Section */}
-          <div className="col-md-6 d-flex align-items-center justify-content-center">
-            <img
-              src={prediction}
-              alt="Contact Us"
-              className="img-fluid shadow-lg"
-              style={{ borderRadius: '10px' }}
-            />
+      {/* About Section */}
+      <section className="about-section py-5 bg-white mt-3 mb-5">
+        <Container>
+          <div className="text-center mb-5">
+            <h2 className="display-5 fw-bold text-dark mb-3">
+              What is <span className="text-primary">Churn Prediction?</span>
+            </h2>
+            <div
+              className="mx-auto bg-gradient"
+              style={{
+                width: "80px",
+                height: "4px",
+                background: "linear-gradient(to right, #4361ee, #7209b7)",
+              }}
+            ></div>
           </div>
 
-          {/* Right Contact Form Section */}
-          <div className="col-md-6">
-            <div className="card shadow-lg p-4" style={{ backgroundColor: "#f9f9f9", borderColor: primaryColor }}>
-              <h3 className="text-center mb-4 fw-bold" style={{ color: primaryColor }}>Send us a Message</h3>
-              <form onSubmit={sendMsg}>
-                <div className="form-group mb-3">
-                  <label htmlFor="name" className="form-label fw-bold">Username</label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="username"
-                    placeholder="Username"
-                    className="form-control"
-                    value={contact.username}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group mb-3">
-                  <label htmlFor="email" className="form-label fw-bold">Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    placeholder="Email"
-                    className="form-control"
-                    value={contact.email}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group mb-3">
-                  <label htmlFor="phone" className="form-label fw-bold">Phone</label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    placeholder="Phone Number"
-                    className="form-control"
-                    value={contact.phone}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-                <div className="form-group mb-4">
-                  <label htmlFor="message" className="form-label fw-bold">Message</label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    placeholder="Enter Your Message..."
-                    rows={4}
-                    className="form-control"
-                    value={contact.message}
-                    onChange={handleInputChange}
-                    required
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="btn w-100 fw-bold"
-                  style={{ backgroundColor: primaryColor, color: "white" }}
+          <Row className="align-items-center">
+            <Col lg={6} className="mb-4 mb-lg-0">
+              <p className="fs-5 text-muted">
+                Churn prediction refers to the process of identifying customers
+                who are likely to stop using a service or product within a
+                certain timeframe. This is particularly relevant in
+                subscription-based businesses, such as telecoms, SaaS (Software
+                as a Service), and online services, where retaining customers is
+                crucial for long-term profitability.
+              </p>
+
+              <Row className="mt-4">
+                <Col sm={4} className="mb-3">
+                  <div className="text-center p-3">
+                    <div
+                      className="mx-auto mb-3 bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                      style={{ width: "70px", height: "70px" }}
+                    >
+                      <FaChartLine className="fs-3 text-primary" />
+                    </div>
+                    <div className="fw-bold">AI-Powered</div>
+                  </div>
+                </Col>
+                <Col sm={4} className="mb-3">
+                  <div className="text-center p-3">
+                    <div
+                      className="mx-auto mb-3 bg-purple bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                      style={{ width: "70px", height: "70px" }}
+                    >
+                      <FaUserFriends className="fs-3 text-purple" />
+                    </div>
+                    <div className="fw-bold">Precise Targeting</div>
+                  </div>
+                </Col>
+                <Col sm={4} className="mb-3">
+                  <div className="text-center p-3">
+                    <div
+                      className="mx-auto mb-3 bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                      style={{ width: "70px", height: "70px" }}
+                    >
+                      <FaLightbulb className="fs-3 text-success" />
+                    </div>
+                    <div className="fw-bold">Real-time Analysis</div>
+                  </div>
+                </Col>
+              </Row>
+
+              <div className="d-flex flex-wrap gap-3 mt-4">
+                <Button
+                  className="btn-glow fw-bold"
+                  onClick={() =>
+                    document
+                      .getElementById("contact-section")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
                 >
-                  SEND MESSAGE
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        {/* Contact Info Section Below */}
-        <div className="row mt-5">
-          <div className="col-md-12">
-            <div className="card shadow-lg p-4" style={{ backgroundColor: "#f9f9f9" }}>
-              <h3 style={{ color: primaryColor }}>Contact Information</h3>
-              <p className="mb-2"><FaMapMarkerAlt /> Vasai, Mumbai, Maharashtra, 401202</p>
-              <p className="mb-2"><FaPhone /> +911234567890</p>
-              <p className="mb-2"><FaEnvelope /> contact@eseva.com</p>
-              <hr />
-              <div className="d-flex">
-                <a href="#" className="text-dark mr-3"><FaLinkedin size={36} /></a>
-                <a href="#" className="text-dark mr-3 ms-3"><FaInstagram size={36} /></a>
-                <a href="#" className="text-dark mr-3 ms-3"><FaTwitter size={36} /></a>
-                <a href="#" className="text-dark mr-3 ms-3"><FaWhatsapp size={36} /></a>
+                  CONTACT US
+                </Button>
+                <Button
+                  variant="outline-primary"
+                  className="btn-glow-outline fw-bold"
+                >
+                  OUR SERVICES
+                </Button>
               </div>
-            </div>
+            </Col>
+
+            <Col lg={6}>
+              <Card className="border-0 shadow-lg">
+                <Card.Body className="p-4">
+                  <Card.Title className="fs-3 fw-bold mb-4">
+                    Analytics Overview
+                  </Card.Title>
+
+                  <div className="mb-4">
+                    <div className="d-flex justify-content-between mb-1">
+                      <span className="text-muted">Customer Retention</span>
+                      <span className="fw-bold text-success">87%</span>
+                    </div>
+                    <div className="progress" style={{ height: "8px" }}>
+                      <div
+                        className="progress-bar bg-success"
+                        role="progressbar"
+                        style={{ width: "87%" }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="d-flex justify-content-between mb-1">
+                      <span className="text-muted">Churn Risk Score</span>
+                      <span className="fw-bold text-warning">23%</span>
+                    </div>
+                    <div className="progress" style={{ height: "8px" }}>
+                      <div
+                        className="progress-bar bg-warning"
+                        role="progressbar"
+                        style={{ width: "23%" }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="d-flex justify-content-between mb-1">
+                      <span className="text-muted">Prediction Accuracy</span>
+                      <span className="fw-bold text-primary">95%</span>
+                    </div>
+                    <div className="progress" style={{ height: "8px" }}>
+                      <div
+                        className="progress-bar bg-primary"
+                        role="progressbar"
+                        style={{ width: "95%" }}
+                      ></div>
+                    </div>
+                  </div>
+
+                  <div className="alert alert-primary mt-4">
+                    <strong>Pro Tip:</strong> Early identification of at-risk
+                    customers can increase retention rates by up to 40%.
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+
+      {/* Features Grid */}
+      <section className="features-section py-5 bg-light">
+        <Container>
+          <div className="text-center mb-5">
+            <h2 className="display-5 fw-bold text-dark mb-1">
+              Why Choose <span className="text-primary">Churn Prediction?</span>
+            </h2>
+            <div
+              className="mx-auto bg-gradient"
+              style={{
+                width: "80px",
+                height: "4px",
+                background: "linear-gradient(to right, #4361ee, #7209b7)",
+              }}
+            ></div>
+            <p className="lead">
+              ---------- Discover the key benefits of implementing churn prediction in your
+              business strategy ----------
+            </p>
           </div>
-        </div>
-      </div>
+
+          <Row className="g-4">
+            {[
+              {
+                title: "Improved Customer Retention",
+                description:
+                  "By identifying at-risk customers, businesses can implement targeted strategies to retain them, reducing churn rates.",
+                icon: <FaChartLine className="fs-3" />,
+              },
+              {
+                title: "Enhanced Customer Insights",
+                description:
+                  "Analyzing churn data provides valuable insights into customer behavior and preferences, allowing for more personalized experiences.",
+                icon: <FaUserFriends className="fs-3" />,
+              },
+              {
+                title: "Cost Efficiency",
+                description:
+                  "Retaining existing customers is often cheaper than acquiring new ones, making churn prediction a cost-effective strategy for your company.",
+                icon: <FaMoneyBillWave className="fs-3" />,
+              },
+              {
+                title: "Informed Decision-Making",
+                description:
+                  "Data-driven insights from churn prediction can guide marketing, sales, and customer service strategies.",
+                icon: <FaLightbulb className="fs-3" />,
+              },
+              {
+                title: "Increased Revenue",
+                description:
+                  "By minimizing churn, companies can maintain a stable revenue stream and maximize the lifetime value of customers.",
+                icon: <FaChartLine className="fs-3" />,
+              },
+              {
+                title: "Resource Allocation",
+                description:
+                  "Understanding which customers are likely to churn helps in prioritizing resources for retention efforts.",
+                icon: <FaCogs className="fs-3" />,
+              },
+            ].map((feature, index) => (
+              <Col lg={4} md={6} key={index}>
+                <Card className="h-100 border-0 shadow-sm hover-shadow transition-all position-relative overflow-hidden feature-card">
+                  <div className="position-absolute top-0 end-0 bg-primary text-white px-3 py-1 fw-bold rounded-bl">
+                    0{index + 1}
+                  </div>
+                  <Card.Body className="p-4">
+                    <div
+                      className="mb-4 bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center"
+                      style={{ width: "70px", height: "70px" }}
+                    >
+                      {feature.icon}
+                    </div>
+                    <Card.Title className="fw-bold mb-3">
+                      {feature.title}
+                    </Card.Title>
+                    <Card.Text className="text-muted">
+                      {feature.description}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact-section" className="contact-section py-5 bg-white">
+        <Container>
+          <div className="text-center mb-5">
+            <h2 className="display-5 fw-bold text-dark mb-1">
+              Get In <span className="text-primary">Touch</span>
+            </h2>
+            <div
+              className="mx-auto bg-gradient"
+              style={{
+                width: "80px",
+                height: "4px",
+                background: "linear-gradient(to right, #4361ee, #7209b7)",
+              }}
+            ></div>
+            <p className="lead">
+              ---------- Have questions about churn prediction? We're here to help you make
+              data-driven decisions ----------
+            </p>
+          </div>
+
+          <Row className="g-4">
+            <Col lg={6}>
+              <Card className="border-0 shadow-lg h-100">
+                <Card.Body className="p-4">
+                  <Card.Title className="text-center mb-4 fw-bold">
+                    Send us a Message
+                  </Card.Title>
+                  <form onSubmit={sendMsg}>
+                    <div className="mb-3">
+                      <label className="form-label fw-bold">Full Name</label>
+                      <input
+                        type="text"
+                        name="username"
+                        placeholder="Enter your full name"
+                        className="form-control form-control-lg"
+                        value={contact.username}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label fw-bold">
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        placeholder="Enter your email address"
+                        className="form-control form-control-lg"
+                        value={contact.email}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label fw-bold">Phone Number</label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        placeholder="Enter your phone number"
+                        className="form-control form-control-lg"
+                        value={contact.phone}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+
+                    <div className="mb-4">
+                      <label className="form-label fw-bold">Message</label>
+                      <textarea
+                        name="message"
+                        placeholder="Tell us about your churn prediction needs..."
+                        rows={4}
+                        className="form-control form-control-lg"
+                        value={contact.message}
+                        onChange={handleInputChange}
+                        required
+                      ></textarea>
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="btn-glow w-100 fw-bold py-3"
+                    >
+                      SEND MESSAGE
+                    </Button>
+                  </form>
+                </Card.Body>
+              </Card>
+            </Col>
+
+            <Col lg={6}>
+              <Card className="border-0 shadow-lg h-100">
+                <Card.Body className="p-4">
+                  <Card.Title className="text-center mb-4 fw-bold">
+                    Contact Information
+                  </Card.Title>
+
+                  <div className="text-center mb-4">
+                    <div
+                      className="mx-auto mb-3 rounded-circle overflow-hidden"
+                      style={{ width: "150px", height: "150px" }}
+                    >
+                      <div className="gradient-border rounded-circle p-2">
+                        <img
+                          src={prediction}
+                          alt="Contact"
+                          className="img-fluid rounded-circle w-100 h-100 object-fit-cover"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-5">
+                    <div className="d-flex align-items-start mb-4">
+                      <div className="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
+                        <FaMapMarkerAlt className="fs-4 text-primary" />
+                      </div>
+                      <div>
+                        <h5 className="fw-bold">Address</h5>
+                        <p className="text-muted mb-0">
+                          Vasai, Mumbai, Maharashtra, 401202
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="d-flex align-items-start mb-4">
+                      <div className="bg-success bg-opacity-10 rounded-circle p-3 me-3">
+                        <FaPhone className="fs-4 text-success" />
+                      </div>
+                      <div>
+                        <h5 className="fw-bold">Phone</h5>
+                        <p className="text-muted mb-0">+91 1234567890</p>
+                      </div>
+                    </div>
+
+                    <div className="d-flex align-items-start">
+                      <div className="bg-purple bg-opacity-10 rounded-circle p-3 me-3">
+                        <FaEnvelope className="fs-4 text-purple" />
+                      </div>
+                      <div>
+                        <h5 className="fw-bold">Email</h5>
+                        <p className="text-muted mb-0">
+                          contact@churnpredict.com
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-4 border-top">
+                    <h5 className="fw-bold text-center mb-3">Follow Us</h5>
+                    <div className="d-flex justify-content-center gap-3">
+                      <a href="#" className="social-icon bg-primary">
+                        <FaLinkedin className="fs-5" />
+                      </a>
+                      <a href="#" className="social-icon bg-instagram">
+                        <FaInstagram className="fs-5" />
+                      </a>
+                      <a href="#" className="social-icon bg-info">
+                        <FaTwitter className="fs-5" />
+                      </a>
+                      <a href="#" className="social-icon bg-success">
+                        <FaWhatsapp className="fs-5" />
+                      </a>
+                    </div>
+                  </div>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </section>
     </div>
   );
 };

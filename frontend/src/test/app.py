@@ -12,9 +12,6 @@ matplotlib.use('Agg')  # Use a non-GUI backend for Matplotli
 import tempfile
 import os
 
-
-
-
 app = Flask(__name__)
 temp_files = {}
 
